@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>弹窗（置底取消/确定按钮）</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .modal-mask {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      position: relative;
+      width: 640px;
+      height: auto;
+      max-height: calc(100vh - 160px);
+      /* 上下各80px间距 */
+      background-color: #fff;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      /* 纵向flex，拆分标题/内容/按钮 */
+    }
+
+    /* 弹窗标题 */
+    .modal-title {
+      padding: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      border-bottom: 1px solid #eee;
+      flex-shrink: 0;
+      /* 固定高度，不压缩 */
+      background: #fff;
+    }
+
+    /* 内容区（保留底部20px间距 + 滚动） */
+    .modal-body {
+      flex: 1;
+      /* 占据剩余高度 */
+      padding: 20px;
+      padding-bottom: 20px;
+      /* 文字与底部留20px空白 */
+      overflow-y: auto;
+      /* 内容超出时滚动 */
+      min-height: 100px;
+      /* 内容过少时保底高度 */
+    }
+
+    /* 底部按钮区（固定置底） */
+    .modal-footer {
+      padding: 16px 20px;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: flex-end;
+      /* 按钮右对齐 */
+      gap: 12px;
+      /* 按钮间距 */
+      flex-shrink: 0;
+      /* 固定高度，不压缩 */
+      background: #fff;
+      /* 防止内容滚动透传 */
+    }
+
+    /* 按钮样式 */
+    .modal-btn {
+      padding: 8px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      /* 改变鼠标样式 */
+      font-size: 14px;
+      line-height: 22px;
+      border: .5px solid #eee;
+      background: #fff;
+      transition: all 0.2s;
+    }
+
+    /* 取消按钮 */
+    .modal-btn.cancel {
+      background-color: #f7f7f7;
+      color: #000;
+      font-weight: 500;
+    }
+
+    .modal-btn.cancel:hover {
+      background: #f1f1f1;
+    }
+
+    /* 确定按钮 */
+    .modal-btn.confirm {
+      background: #1677ff;
+      color: #fff;
+      border-color: #1677ff;
+    }
+
+    .modal-btn.confirm:hover {
+      background: #4096ff;
+    }
+
+    /* 关闭按钮（可选） */
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      background: #f5f5f5;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 14px;
+      z-index: 10;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="modal-mask">
+    <div class="modal-content">
+      <div class="modal-close">×</div>
+      <div class="modal-title">弹窗标题</div>
+      <div class="modal-body">
+        <p>则天是李显给老妈上的尊号，全称则天大圣皇帝，不是她的本名。
+          她有个名叫武媚，是入宫后李世民起的，和武才人武昭仪一样，只在宫内称呼。
+          正史上她名叫武曌，曌字是她外甥宗秦客造的，意思是日月当空，普照万方，她非常喜欢，六十多了又改用此名。
+          她真名可能带华，因为她避讳华字，如华州改为太州，华容改为容城。
+          如此说来，从他哥武元庆武元爽排，她应该叫武元华，从她姐姐武顺排，则可能叫武华。
+          有人反对说，之所以避讳华字，是因为她爷爷叫武华，经查证属实，所以华字一说不可信。
+          现在她姐武顺墓志出土了，夫人名顺，字明则。
+          由此推测，她可能本名武照，字明空，照本意就是明空，而曌和照同音，同时也暗含了她的字。
+          对不对不知道，要等乾陵打开那一天，也可能打开了也不知道。
+          一场胡扯没来由，青山点点笑人愁。</p>
+        <p>则天是李显给老妈上的尊号，全称则天大圣皇帝，不是她的本名。
+          她有个名叫武媚，是入宫后李世民起的，和武才人武昭仪一样，只在宫内称呼。
+          正史上她名叫武曌，曌字是她外甥宗秦客造的，意思是日月当空，普照万方，她非常喜欢，六十多了又改用此名。
+          她真名可能带华，因为她避讳华字，如华州改为太州，华容改为容城。
+          如此说来，从他哥武元庆武元爽排，她应该叫武元华，从她姐姐武顺排，则可能叫武华。
+          有人反对说，之所以避讳华字，是因为她爷爷叫武华，经查证属实，所以华字一说不可信。
+          现在她姐武顺墓志出土了，夫人名顺，字明则。
+          由此推测，她可能本名武照，字明空，照本意就是明空，而曌和照同音，同时也暗含了她的字。
+          对不对不知道，要等乾陵打开那一天，也可能打开了也不知道。
+          一场胡扯没来由，青山点点笑人愁。</p>
+        <p>则天是李显给老妈上的尊号，全称则天大圣皇帝，不是她的本名。
+          她有个名叫武媚，是入宫后李世民起的，和武才人武昭仪一样，只在宫内称呼。
+          正史上她名叫武曌，曌字是她外甥宗秦客造的，意思是日月当空，普照万方，她非常喜欢，六十多了又改用此名。
+          她真名可能带华，因为她避讳华字，如华州改为太州，华容改为容城。
+          如此说来，从他哥武元庆武元爽排，她应该叫武元华，从她姐姐武顺排，则可能叫武华。
+          有人反对说，之所以避讳华字，是因为她爷爷叫武华，经查证属实，所以华字一说不可信。
+          现在她姐武顺墓志出土了，夫人名顺，字明则。
+          由此推测，她可能本名武照，字明空，照本意就是明空，而曌和照同音，同时也暗含了她的字。
+          对不对不知道，要等乾陵打开那一天，也可能打开了也不知道。
+          一场胡扯没来由，青山点点笑人愁。</p>
+      </div>
+      <!-- 底部取消/确定按钮 -->
+      <div class="modal-footer">
+        <button class="modal-btn cancel">取消</button>
+        <button class="modal-btn confirm">确定</button>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

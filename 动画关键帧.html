@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="动画" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../base.css">
+  <style>
+    .box {
+      height: 200px;
+      width: 200px;
+      background-color: rgb(85, 165, 67);
+    }
+
+    @keyframes move {
+      0% {
+        transform: translate(0, 0);
+      }
+
+      100% {
+        transform: translate(500px, 500px);
+        background-color: rgb(139, 139, 255);
+        border-radius: 50%;
+      }
+    }
+
+    .box {
+      /* animation：动画名称 动画时长 动画曲线 延迟时间 播放次数 播放方向 执行完毕状态 */
+      /* 播放方向：normal 正常播放 reverse 反方向播放 alternate 交替播放 alternate-reverse 反交替播放 */
+      /* 执行完毕状态：forwards 保持最后一帧 backwards 保持第一帧 */
+      animation: move 2s linear 0s infinite alternate;
+    }
+
+    .box:hover {
+      /* 鼠标经过暂停动画，此设置项不可以写在animation中，单独写 */
+      animation-play-state: paused;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../base.css">
+  <style>
+    body {
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .box {
+      position: relative;
+      width: 800px;
+      height: 400px;
+    }
+
+    .box>* {
+      transform: rotateY(-20deg) rotateX(20deg);
+    }
+
+    .back {
+      position: absolute;
+      top: -20px;
+      left: -12px;
+      width: 300px;
+      height: 200px;
+      background-color: rgb(139, 139, 255);
+      text-align: center;
+      line-height: 200px;
+      color: #fff;
+      text-transform: uppercase;
+      transition: all 0.5s ease-in-out;
+    }
+
+    .front {
+      position: absolute;
+      top: calc(50% - 150px);
+      left: calc(50% - 300px);
+      width: 600px;
+      height: 300px;
+      background-color: rgba(88, 143, 76, 0.8);
+      text-align: center;
+      line-height: 300px;
+      color: #fff;
+      text-transform: uppercase;
+      backdrop-filter: blur(10px);
+      transition: all 0.5s ease-in-out;
+    }
+
+    .box:hover .back {
+      transform: translate(-20px, -12px);
+    }
+
+    .box:hover .front {
+      transform: rotateY(0deg) rotateX(0deg)
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <div class="back">
+      <h1>hello world</h1>
+    </div>
+    <div class="front">
+      <h1>hello world</h1>
+    </div>
+  </div>
+</body>
+
+</html>

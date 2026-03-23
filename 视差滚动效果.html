@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>视差滚动效果</title>
+  <link rel="stylesheet" href="date.css">
+  <style>
+    .top-nav {
+      width: 100%;
+      height: 72px;
+      display: flex;
+      /* 左右导航贴边，中间 Logo 居中
+      justify-content: space-between; */
+      /* 垂直居中 */
+      align-items: center;
+      position: fixed;
+      z-index: 99;
+      color: #000;
+    }
+
+    /* 默认样式（所有屏幕先继承） */
+    .brand-logo {
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      /* 标准 Flex 水平居中：子元素沿主轴（水平）居中 */
+      align-items: center;
+      /* 标准 Flex 垂直居中：子元素沿交叉轴（垂直）居中 */
+      width: 7.625rem;
+      height: 1.75rem;
+      transition: color 0.25s linear;
+    }
+
+    /* 大屏（桌面，≥1440px） */
+    @media screen and (min-width: 1440px) {
+      .brand-logo {
+        width: 8.625rem;
+        height: 1.9375rem;
+      }
+    }
+
+    /* 左右导航通用样式 */
+    .nav-left ul,
+    .nav-right ul {
+      position: absolute;
+      /* 脱离 Flex 文档流，不影响 logo 居中 */
+      display: flex;
+      /* 导航项之间的间距 */
+      align-items: center;
+      /* 垂直居中（适配图标） */
+      top: 50%;
+      /* 先定位到容器垂直中点 */
+      transform: translateY(-50%);
+      /* 向上偏移自身高度的 50%，实现精准垂直居中 */
+    }
+
+    .nav-left ul {
+      left: 20px;
+    }
+
+    .nav-right ul {
+      right: 20px;
+
+    }
+
+    .nav-left ul li,
+    .nav-right ul li {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-right ul li button {
+      display: flex;
+      color: inherit;
+      padding: 4px 12px;
+      align-items: center;
+    }
+
+    .nav-right ul li button svg path {
+      stroke: currentcolor;
+    }
+
+    .nav-left a,
+    .nav-right a {
+      padding: 0 12px;
+      color: inherit;
+      text-decoration: none;
+      font-family: 'Helvetica_Reg';
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 16px;
+      /* 统一大写 */
+      text-transform: uppercase;
+      /* 字母间距，还原品牌风格 */
+      letter-spacing: -0.2px;
+      transition: opacity 0.2s;
+    }
+
+    .nav-left a:hover,
+    .nav-right a:hover,
+    .brand-logo:hover {
+      opacity: 0.5;
+      /*  hover 时轻微透明 */
+    }
+
+    /* RIVE DROITE 前的方块样式 */
+    .rive-droite span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background-color: currentColor;
+      margin: 0 4px 0 0;
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+    }
+
+    .container [attr^="box"] {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .container [attr^="box"] img {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      /* 图片宽度铺满容器 */
+      height: 100%;
+      /* 图片高度铺满容器 */
+      object-fit: cover;
+      /* 核心：保持图片比例，填充容器，超出部分裁切 */
+      object-position: center;
+      /* 可选：控制图片裁切的锚点（默认居中，可设 top/left/bottom/right 等） */
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 顶部导航栏容器 -->
+  <header class="top-nav">
+    <!-- 左侧导航 -->
+    <nav class="nav-left">
+      <ul>
+        <li><a href="#">HIGHLIGHTS</a></li>
+        <li><a href="#">WOMEN</a></li>
+        <li><a href="#">MEN</a></li>
+        <li><a href="#">SL PRODUCTIONS</a></li>
+        <li><a href="#" class="rive-droite">
+            <span></span>
+            RIVE DROITE</a></li>
+      </ul>
+    </nav>
+    <!-- 中间品牌 Logo -->
+    <div class="brand-logo">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 122 28" aria-hidden="false">
+        <path fill="currentColor" fill-rule="evenodd"
+          d="M21.059 5.954 14.05 19.357s-.228-1.208-1.562-2.888L6.543 8.695C2.336 2.94 11.428-3.684 16.394 4.37l.553-2.056C11.694-2.136 4.414.288 3.485 5.718c-.096.641-.243 2.712 1.297 4.709l.413.493.1.112.165.194c.052.064.098.123.14.18l5.43 6.426C16.078 24.22 6.565 31.44.884 22.26L.206 24.42c4.274 3.883 10.625 4.222 13.308-1.253l3.964-8.414h3.78l1.856 6.89h2.005c-.185-.178-.435-.65-.56-1.106L21.072 5.969l-.014-.015Zm-3.198 7.84 2.011-4.325 1.12 4.325h-3.131Z"
+          clip-rule="evenodd" />
+        <path fill="currentColor"
+          d="M4.782 10.427c.125.162.265.331.413.493l-.413-.493ZM27.749 6.448l-.155 14.309c-.022.191.243.825.361.877H26.1L25.855 7.78c0-.493-.287-1.046-.574-1.333h2.468ZM91.743 20.72v-6.005h5.519v-.914h-5.52L91.89 7.2c3.699.022 5.372.848 5.372.848V6.499H89.37s.464.457.501 1.548l.155 13.557c-.214-.294-5.74-7.073-5.74-7.073 4.568-.87 7.84-9.918-5.335-7.987.244.302.457.744.465 1.606l-.361 12.239c-.06.508-.185.994-.34 1.215h2.056l.722-14.596c5.107-1.334 7.39 6.602.627 7.84.335.395 3.591 3.842 5.682 6.056h.001l.011.012c.94.994 1.642 1.737 1.733 1.838.834.907 2.967 1.729 3.788 2.045l.198.077c-1.208-.744-3.05-2.712-3.271-3.08.479.007 7.405 0 7.405 0l.64-1.43s-2.246.804-5.85.804h-.059c-.287.002-.64.005-.64-.443l-.015-.007ZM51.261 25.045c-.14.56-.103 1.047.833 1.061 2.88.044 8.812-.479 11.185-1.29l-1.105 1.924H48.867c.213-.273.405-.781.596-1.481l3.765-17.47c-1.422-.53-3.168-.56-4.774-.56l-.464 13.226c-.008.494.073.862.162 1.179h-2.034c.14-.383.192-.7.206-1.245l-.103-13.16h-2.52c-.695.018-.684.55-.677.906.002.067.003.127 0 .177l-.656 14.552L31.374 8.776v12.85h-1.451c.132-.206.339-.87.368-1.392l.413-12.372-1.098-1.422h2.638l9.615 13.263V6.44h11.679l.973-4.435c.103-.597.103-.958-.17-1.305h2.734L51.26 25.045ZM75.636 17.036c-.015 5.718-6.263 5.548-6.278.295l-.022-10.824H66.94c.317.17.486.78.53 1.525.025.174.076 2.97.123 5.56v.003c.038 2.134.075 4.125.091 4.391.361 5.424 8.18 6.44 8.65-.604.017-.294.09-1.802.167-3.405v-.002c.094-1.935.193-4.007.21-4.248.088-1.297.243-2.874.677-3.22H75.65l-.007 10.529h-.007Z" />
+        <path fill="currentColor" fill-rule="evenodd"
+          d="m54.901 20.64 7.634-15.003h.007l3.485 14.759s.42 1.076.62 1.216h-1.82c-.133-.428-1.975-6.963-1.975-6.963h-3.898s-3.08 6.771-3.169 6.963H54.21c.162-.162.515-.678.692-.973Zm6.484-11.348-2.063 4.576h3.294l-1.23-4.576Z"
+          clip-rule="evenodd" />
+        <path fill="currentColor"
+          d="M110.613 6.588V19.85l-9.616-13.263h-2.638c.14.17.988 1.252 1.106 1.414 0 .384-.413 12.372-.413 12.372v.022c-.023.542-.04.963-.228 1.378h1.311V8.924s10.802 13.808 10.994 14.08c.022-.53.545-14.574.545-14.574 0-.317 0-1.201.855-1.201h2.741l.088 13.513c-.025.45-.078.617-.162.884l-.044.14h1.945c-.096-.353-.147-.545-.125-1.024l.486-13.52c1.636 0 2.66 0 4.126.442V6.58H110.62l-.007.008Z" />
+      </svg>
+    </div>
+    <!-- 右侧导航 -->
+    <nav class="nav-right">
+      <ul>
+        <li><a href="#">LA MAISON</a></li>
+        <li><a href="#">STORES</a></li>
+        <li><a href="#">SERVICES</a></li>
+        <li><a href="#">LOGIN</a></li>
+        <li>
+          <button type="button" title="搜索" class="btn-search">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M10.9998 16.45C14.0098 16.45 16.4498 14.01 16.4498 11C16.4498 7.9901 14.0098 5.55005 10.9998 5.55005C7.98985 5.55005 5.5498 7.9901 5.5498 11C5.5498 14.01 7.98985 16.45 10.9998 16.45Z"
+                stroke="black" stroke-width="1.1" />
+              <path d="M14.5 14.5L19 19" stroke="black" />
+            </svg>
+          </button>
+        <li>
+          <button type="button" title="搜索" class="btn-cart">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5.5 7.5H18.5V18.5H5.5V7.5Z" stroke="black" />
+              <path d="M9.5 7.5V7C9.5 5.61929 10.6193 4.5 12 4.5C13.3807 4.5 14.5 5.61929 14.5 7V7.5" stroke="black" />
+            </svg>
+          </button>
+      </ul>
+    </nav>
+  </header>
+  <main class="container">
+    <div class="box1">
+      <a>
+        <img src="/images/img1.avif" alt="">
+      </a>
+    </div>
+    <div class="box2">
+      <a>
+        <img src="/images/img1.avif" alt="">
+      </a>
+    </div>
+  </main>
+</body>
+
+</html>

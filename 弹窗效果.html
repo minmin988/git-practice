@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>弹窗效果</title>
+  <link rel="stylesheet" href="date.css">
+  <style>
+    .modal-mask {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      /* 设置弹窗居中 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      /* 设置绝对定位使得弹窗脱离文档流，令弹窗居中生效 */
+      position: relative;
+      height: auto;
+      max-height: calc(100vh - 160px);
+      width: 640px;
+      border-radius: 12px;
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      /* 纵向flex，拆分标题/内容/按钮 */
+    }
+
+    .modal-title {
+      display: flex;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      left: 0;
+      align-items: center;
+      font-size: 20px;
+      font-weight: bold;
+      line-height: 32px;
+      color: #333;
+      background-color: #fff;
+      padding: 16px 20px;
+      border-bottom: .5px solid #EEE;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .close-btn {
+      width: 24px;
+      height: 24px;
+    }
+
+    .close-btn:hover {
+      background-color: #f7f7f7;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      flex: 1;
+      /* 占据剩余高度 */
+      padding: 16px 20px;
+      overflow-y: auto;
+    }
+
+    .modal-footer {
+      padding: 16px 20px;
+      /* 按钮区与弹窗边缘的间距 */
+      border-top: .5px solid #eee;
+      display: flex;
+      justify-content: flex-end;
+      /* 关键：按钮整体居右 */
+      gap: 12px;
+      /* 按钮之间的间距（替代margin更简洁） */
+      flex-shrink: 0;
+      /* 固定高度，不被压缩 */
+      background: #fff;
+      border-radius: 0 0 12px 12px;
+    }
+
+    /* 按钮样式 */
+    .modal-btn {
+      padding: 6px 18px;
+      width: 72px;
+      border-radius: 8px;
+      cursor: pointer;
+      /* 改变鼠标样式 */
+      position: relative;
+      font-size: 14px;
+      line-height: 22px;
+      border: .5px solid #eee;
+      background: #fff;
+      transition: all 0.2s;
+      overflow: hidden;
+    }
+
+    /* 取消按钮 */
+    .modal-btn.cancel {
+      background-color: #f7f7f7;
+      color: #000;
+      font-weight: 500;
+    }
+
+    .modal-btn.cancel:hover {
+      background: #eee;
+    }
+
+    /* 确定按钮 */
+    .modal-btn.confirm {
+      color: #fff;
+      /* 渐变背景 */
+      background: linear-gradient(90deg, #1696ff 0%, #7040ff 100%);
+    }
+
+    .modal-btn.confirm span {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 34px;
+      width: 96px;
+      background-color: rgba(0, 0, 0, 0.2);
+      opacity: 0;
+    }
+
+    .modal-btn.confirm span:hover {
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="modal-mask">
+    <div class="modal-content">
+      <div class="modal-title">
+        <h4>弹窗标题</h4>
+        <button type="button" class="close-btn">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_577_1242)">
+              <path
+                d="M11.7711 13.1853C12.1616 13.5758 12.7948 13.5758 13.1853 13.1853C13.5758 12.7948 13.5758 12.1616 13.1853 11.7711L9.41404 7.99983L13.1853 4.22859C13.5758 3.83807 13.5758 3.2049 13.1853 2.81438C12.7948 2.42385 12.1616 2.42385 11.7711 2.81438L7.99983 6.58561L4.22859 2.81438C3.83807 2.42385 3.2049 2.42385 2.81438 2.81438C2.42385 3.2049 2.42385 3.83807 2.81438 4.22859L6.58561 7.99983L2.81438 11.7711C2.42385 12.1616 2.42385 12.7948 2.81438 13.1853C3.2049 13.5758 3.83807 13.5758 4.22859 13.1853L7.99983 9.41404L11.7711 13.1853Z"
+                fill="#1C2023" fill-opacity="0.8" />
+            </g>
+            <defs>
+              <clipPath id="clip0_577_1242">
+                <rect width="16" height="16" fill="white" />
+              </clipPath>
+            </defs>
+          </svg>
+
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>则天是李显给老妈上的尊号，全称则天大圣皇帝，不是她的本名。
+          她有个名叫武媚，是入宫后李世民起的，和武才人武昭仪一样，只在宫内称呼。
+          正史上她名叫武曌，曌字是她外甥宗秦客造的，意思是日月当空，普照万方，她非常喜欢，六十多了又改用此名。
+          她真名可能带华，因为她避讳华字，如华州改为太州，华容改为容城。
+          如此说来，从他哥武元庆武元爽排，她应该叫武元华，从她姐姐武顺排，则可能叫武华。
+          有人反对说，之所以避讳华字，是因为她爷爷叫武华，经查证属实，所以华字一说不可信。
+          现在她姐武顺墓志出土了，夫人名顺，字明则。
+          由此推测，她可能本名武照，字明空，照本意就是明空，而曌和照同音，同时也暗含了她的字。
+          对不对不知道，要等乾陵打开那一天，也可能打开了也不知道。
+          一场胡扯没来由，青山点点笑人愁。</p>
+        <p>则天是李显给老妈上的尊号，全称则天大圣皇帝，不是她的本名。
+          她有个名叫武媚，是入宫后李世民起的，和武才人武昭仪一样，只在宫内称呼。
+          正史上她名叫武曌，曌字是她外甥宗秦客造的，意思是日月当空，普照万方，她非常喜欢，六十多了又改用此名。
+          她真名可能带华，因为她避讳华字，如华州改为太州，华容改为容城。
+          如此说来，从他哥武元庆武元爽排，她应该叫武元华，从她姐姐武顺排，则可能叫武华。
+          有人反对说，之所以避讳华字，是因为她爷爷叫武华，经查证属实，所以华字一说不可信。
+          现在她姐武顺墓志出土了，夫人名顺，字明则。
+          由此推测，她可能本名武照，字明空，照本意就是明空，而曌和照同音，同时也暗含了她的字。
+          对不对不知道，要等乾陵打开那一天，也可能打开了也不知道。
+          一场胡扯没来由，青山点点笑人愁。</p>
+        <p>则天是李显给老妈上的尊号，全称则天大圣皇帝，不是她的本名。
+          她有个名叫武媚，是入宫后李世民起的，和武才人武昭仪一样，只在宫内称呼。
+          正史上她名叫武曌，曌字是她外甥宗秦客造的，意思是日月当空，普照万方，她非常喜欢，六十多了又改用此名。
+          她真名可能带华，因为她避讳华字，如华州改为太州，华容改为容城。
+          如此说来，从他哥武元庆武元爽排，她应该叫武元华，从她姐姐武顺排，则可能叫武华。
+          有人反对说，之所以避讳华字，是因为她爷爷叫武华，经查证属实，所以华字一说不可信。
+          现在她姐武顺墓志出土了，夫人名顺，字明则。
+          由此推测，她可能本名武照，字明空，照本意就是明空，而曌和照同音，同时也暗含了她的字。
+          对不对不知道，要等乾陵打开那一天，也可能打开了也不知道。
+          一场胡扯没来由，青山点点笑人愁。</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="modal-btn cancel">取消</button>
+        <button type="button" class="modal-btn confirm">确认<span></span></button>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>

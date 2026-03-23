@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D翻转盒子</title>
+  <link rel="stylesheet" href="../base.css">
+  <style>
+    .box {
+      position: relative;
+      top: 50%;
+      /* 先移到垂直中间线 */
+      left: 50%;
+      /* 先移到水平中间线 */
+      transform: translate(-50%, -50%);
+      /* 再往回移自身的50%，实现居中 */
+      height: 500px;
+      width: 300px;
+      text-align: center;
+      font-size: 30px;
+      color: #fff;
+      perspective: 1000px;
+    }
+
+    .box>div {
+      height: 100%;
+      width: 100%;
+      transition: all 4s;
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      top: 0;
+      left: 0;
+      backface-visibility: hidden;
+      transform-style: preserve-3d;
+    }
+
+    .front {
+      z-index: 1;
+      background-color: rgb(85, 165, 67);
+    }
+
+    .back {
+      background-color: rgb(139, 139, 255);
+      transform: rotateY(180deg);
+    }
+
+    .box:hover .front {
+      transform: rotateY(-180deg);
+    }
+
+    .box:hover .back {
+      transform: rotateY(0deg);
+    }
+
+    .box .front h3 {
+      transform: translateZ(100px);
+      backface-visibility: hidden;
+    }
+
+    .box .back p {
+      transform: translateZ(100px);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <div class="front">
+      <h3>3D翻转盒子</h3>
+    </div>
+    <div class="back">
+      <p>3D翻转盒子</p>
+      <p>3D翻转盒子</p>
+      <p>3D翻转盒子</p>
+    </div>
+  </div>
+</body>
+
+</html>

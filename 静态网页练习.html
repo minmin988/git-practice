@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>练习</title>
+    <style>
+        .box {
+            display: block;
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .title {
+            font-size: 60px;
+            font-weight: bold;
+            /* 渐变文字 */
+            background-image: linear-gradient(90deg, rgb(0, 102, 255) 0%, #4d17d6 50%, rgb(255, 5, 5) 100%);
+            /* 以文字形式裁切背景 */
+            background-clip: text;
+            /* 兼容 Webkit 内核浏览器 */
+            -webkit-background-clip: text;
+            /* 文字透明 */
+            color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <h1 class="title">hello world</h1>
+    </div>
+</body>
+
+</html>
